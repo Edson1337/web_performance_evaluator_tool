@@ -1,0 +1,15 @@
+{
+  "browsertime": {
+    "iterations": 5,
+    "prettyPrint": true,
+    "headless": true,
+    "connectivity": {
+      "profile": "4g"
+    },
+    "browser": "edge"
+  },
+  "plugins": {
+    "add": "analysisstorer",
+    "prettyPrint": true
+  }
+}
