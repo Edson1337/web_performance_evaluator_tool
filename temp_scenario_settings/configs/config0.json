@@ -14,18 +14,9 @@
     }
   },
   "plugins": {
-    "add": ["analysisstorer"],
+    "add": [
+      "analysisstorer"
+    ],
     "prettyPrint": true
-  },
-  "compare": {
-    "id": "test_id", 
-    "baselinePath": "../results",
-    "testType": "mannwhitneyu", 
-    "alternative": "two-sided",
-    "mannwhitneyu": {
-      "useContinuity": false,
-      "method": "auto"
-    }
-}
-
+  }
 }
