@@ -1,10 +1,10 @@
 {
   "browsertime": {
-    "iterations": 5,
+    "iterations": 21,
     "prettyPrint": true,
     "headless": true,
     "connectivity": {
-      "profile": "3g"
+      "profile": "cable"
     },
     "browser": "chrome",
     "chrome": {

@@ -1,17 +1,12 @@
 {
   "browsertime": {
-    "iterations": 5,
+    "iterations": 21,
     "prettyPrint": true,
     "headless": true,
     "connectivity": {
-      "profile": "cable"
+      "profile": "3g"
     },
-    "browser": "chrome",
-    "chrome": {
-      "mobileEmulation": {
-        "deviceName": "iPhone 8"
-      }
-    }
+    "browser": "edge"
   },
   "plugins": {
     "add": "analysisstorer",

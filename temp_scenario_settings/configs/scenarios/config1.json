@@ -1,12 +1,17 @@
 {
   "browsertime": {
-    "iterations": 5,
+    "iterations": 21,
     "prettyPrint": true,
     "headless": true,
     "connectivity": {
-      "profile": "cable"
+      "profile": "4g"
     },
-    "browser": "edge"
+    "browser": "edge",
+    "chrome": {
+      "mobileEmulation": {
+        "deviceName": "Moto G4"
+      }
+    }
   },
   "plugins": {
     "add": "analysisstorer",

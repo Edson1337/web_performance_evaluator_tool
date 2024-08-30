@@ -1,15 +1,15 @@
 {
   "browsertime": {
-    "iterations": 5,
+    "iterations": 21,
     "prettyPrint": true,
     "headless": true,
     "connectivity": {
-      "profile": "4g"
+      "profile": "3g"
     },
-    "browser": "edge",
+    "browser": "chrome",
     "chrome": {
       "mobileEmulation": {
-        "deviceName": "iPhone 8"
+        "deviceName": "Moto G4"
       }
     }
   },

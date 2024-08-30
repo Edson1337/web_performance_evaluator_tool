@@ -1,6 +1,6 @@
 {
   "browsertime": {
-    "iterations": 5,
+    "iterations": 21,
     "prettyPrint": true,
     "headless": true,
     "connectivity": {
@@ -16,5 +16,15 @@
   "plugins": {
     "add": "analysisstorer",
     "prettyPrint": true
+  },
+  "compare": {
+    "id": "edge_3g_iphone8",
+    "baselinePath": "./baseline_to_statistical",
+    "testType": "mannwhitneyu",
+    "alternative": "two-sided",
+    "mannwhitneyu": {
+      "useContinuity": false,
+      "method": "auto"
+    }
   }
 }
