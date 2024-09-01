@@ -1,7 +1,11 @@
 import os
 import json
 import pandas as pd
+import re
 from utils.benchmark_name import extract_benchmark
+
+# Regex para capturar JSONs com o padrão específico
+json_file_pattern = re.compile(r'\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}\.json')
 
 def generate_csv():
     current_dir = os.path.abspath(__file__)
@@ -9,9 +13,12 @@ def generate_csv():
     results_path = os.path.join(project_dir, 'results')
     data = []
 
-    for root, _, files in os.walk(results_path):
+    for root, dirs, files in os.walk(results_path):
+        # Ignora a pasta 'baseline_to_statistical' e pastas que correspondem ao padrão de nomes dos JSONs
+        dirs[:] = [d for d in dirs if d != 'baseline_to_statistical' and not json_file_pattern.match(d)]
+
         for file in files:
-            if file.endswith('.json'):
+            if json_file_pattern.match(file):
                 file_path = os.path.join(root, file)
                 with open(file_path, 'r') as f:
                     parsed_json = json.load(f)
@@ -28,7 +35,7 @@ def generate_csv():
                         scenario_name = scenario.get('scenario_name', '')
                         detailed_metrics = scenario.get('detailedMetricsResults', [])
                         for metrics in detailed_metrics:
-                            iteration_run = metrics.get('interation_run', '')
+                            interation_run = metrics.get('interation_run', '')
                             metrics_results = metrics.get('metricsResults', {})
 
                             data_row = {
@@ -36,7 +43,7 @@ def generate_csv():
                                 'project_name': project_name,
                                 'benchmark': benchmark,
                                 'scenario': scenario_name,
-                                'iteration': iteration_run,
+                                'interation': interation_run,
                             }
                             data_row.update(metrics_results)
                             data.append(data_row)
