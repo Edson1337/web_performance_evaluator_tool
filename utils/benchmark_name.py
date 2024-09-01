@@ -1,12 +1,6 @@
-import re
+from utils.route_name import extract_route
+
 
 def extract_benchmark(url, app_name):
-    # Extrai o caminho da URL
-    path = re.search(r'http://[^/]+(/.*)', url)
-    if path:
-        path = path.group(1).strip('/')
-        if not path:
-            path = 'home'
-    else:
-        path = 'home'
+    path = extract_route(url)
     return f"{app_name}-{path}"
