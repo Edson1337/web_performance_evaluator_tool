@@ -1,10 +1,11 @@
+import os
+import subprocess
 import tkinter as tk
 from tkinter import messagebox, Listbox, SINGLE
 from commands.evaluate_app_performance import execute_evaluation
 from commands.generate_csv import generate_csv
 from commands.generate_comparative_dataset import generate_comparative_dataset
 from utils.projects_existing import list_projects
-import os
 
 selected_project = None
 selected_version = None
@@ -44,6 +45,18 @@ def create_comparative_dataset():
     generate_comparative_dataset()
     messagebox.showinfo("Dataset Generated", "Comparative dataset has been generated and saved in the results directory.")
 
+def start_apps():
+    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'start_apps.sh')
+    subprocess.call([script_path])
+
+def stop_apps():
+    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'stop_apps.sh')
+    subprocess.call([script_path])
+
+def on_exit(root):
+    stop_apps()  # Executa o script para parar os containers
+    root.destroy()  # Fecha a interface
+
 def create_gui():
     global projects, project_listbox, version_listbox, route_entry
     root = tk.Tk()
@@ -51,6 +64,17 @@ def create_gui():
     root.geometry("600x600")
 
     projects = list_projects()
+
+    # Criar um Frame para conter os botões Start e Stop
+    button_frame = tk.Frame(root)
+    button_frame.pack(pady=5)
+
+    # Adicionar botões "Start Apps" e "Stop Apps" no Frame
+    start_button = tk.Button(button_frame, text="Start Apps", command=start_apps)
+    start_button.pack(side=tk.LEFT, padx=5)
+
+    stop_button = tk.Button(button_frame, text="Stop Apps", command=stop_apps)
+    stop_button.pack(side=tk.LEFT, padx=5)
 
     project_frame = tk.Frame(root)
     project_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
@@ -80,7 +104,7 @@ def create_gui():
     comparative_dataset_button = tk.Button(root, text="Generate Comparative Dataset", command=create_comparative_dataset)
     comparative_dataset_button.pack(pady=8)
 
-    exit_button = tk.Button(root, text="Exit", command=root.destroy)
+    exit_button = tk.Button(root, text="Exit", command=lambda: on_exit(root))
     exit_button.pack(pady=8)
 
     for project in projects:
