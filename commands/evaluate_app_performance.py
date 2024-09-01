@@ -49,7 +49,7 @@ def execute_evaluation(project_path, route):
                 except Exception as error:
                     print(error)
                 finally:
-                    # delete_sitespeed_results(sitespeed_result_path)
+                    delete_sitespeed_results(sitespeed_result_path)
                     reset_setup_json(parsed_json)  
 
 
