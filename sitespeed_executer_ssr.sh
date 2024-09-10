@@ -33,12 +33,11 @@ for configFile in "$configsFolder"/*; do
             "id": $id,
             "baselinePath": "./baseline_to_statistical",
             "saveBaseline": true,
-            "testType": "mannwhitneyu",
-            "alternative": "two-sided",
-            "mannwhitneyu": {
-                "useContinuity": false,
-                "method": "auto"
-            }
+            "testType": "wilcoxon",
+            "wilcoxon": {
+                "method": "exact"
+            },
+            "alternative": "two-sided"
         }
     }' "$configFile" > tmp.$$.json && mv tmp.$$.json "$configFile"
 

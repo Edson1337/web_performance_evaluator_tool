@@ -32,12 +32,11 @@ for configFile in "$configsFolder"/*; do
         "compare": {
             "id": $id,
             "baselinePath": "./baseline_to_statistical",
-            "testType": "mannwhitneyu",
-            "alternative": "two-sided",
-            "mannwhitneyu": {
-                "useContinuity": false,
-                "method": "auto"
-            }
+            "testType": "wilcoxon",
+            "wilcoxon": {
+                "method": "exact"
+            },
+            "alternative": "two-sided"
         }
     }' "$configFile" > tmp.$$.json && mv tmp.$$.json "$configFile"
 
