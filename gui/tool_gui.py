@@ -53,6 +53,11 @@ def stop_apps():
     script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'stop_apps.sh')
     subprocess.call([script_path])
 
+def open_compose_yaml():
+    # Caminho para o script shell que abre o compose.yaml
+    script_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'select_project.sh')
+    subprocess.call([script_path])
+
 def on_exit(root):
     stop_apps()  # Executa o script para parar os containers
     root.destroy()  # Fecha a interface
@@ -61,42 +66,61 @@ def create_gui():
     global projects, project_listbox, version_listbox, route_entry
     root = tk.Tk()
     root.title("Performance Evaluation Analyzer")
-    root.geometry("600x600")
+    root.geometry("600x450")
 
     projects = list_projects()
 
-    # Criar um Frame para conter os botões Start e Stop
-    button_frame = tk.Frame(root)
-    button_frame.pack(pady=5)
+    # Criar um Frame para conter o Label e os botões Start, Stop, e Choose
+    control_frame = tk.LabelFrame(root, text="Application(s) Options", font=("Helvetica", 14, "bold"))
+    control_frame.pack(pady=10, padx=20, fill=tk.X, ipady=20)
 
-    # Adicionar botões "Start Apps" e "Stop Apps" no Frame
-    start_button = tk.Button(button_frame, text="Start Apps", command=start_apps)
+    # Adicionar botões "Start", "Stop" e "Choose" no Frame
+    start_button = tk.Button(control_frame, text="Start", bg="darkseagreen", fg="white", command=start_apps)
     start_button.pack(side=tk.LEFT, padx=5)
 
-    stop_button = tk.Button(button_frame, text="Stop Apps", command=stop_apps)
+    stop_button = tk.Button(control_frame, text="Stop", bg="lightcoral", fg="white", command=stop_apps)
     stop_button.pack(side=tk.LEFT, padx=5)
 
-    project_frame = tk.Frame(root)
-    project_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+    choose_button = tk.Button(control_frame, text="Choose", command=open_compose_yaml)
+    choose_button.pack(side=tk.LEFT, padx=5)
 
-    version_frame = tk.Frame(root)
-    version_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+    # Criar um Frame para conter project_frame e version_frame lado a lado
+    listbox_frame = tk.Frame(root)
+    listbox_frame.pack(fill=tk.X, expand=True, padx=8, pady=2)
 
-    project_listbox = Listbox(project_frame, selectmode=SINGLE)
-    project_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    # Usar grid para melhor controle dos frames
+    listbox_frame.grid_rowconfigure(0, weight=1)
+    listbox_frame.grid_columnconfigure(0, weight=1)
+    listbox_frame.grid_columnconfigure(1, weight=1)
+
+    # Criar o project_frame dentro do listbox_frame
+    project_frame = tk.LabelFrame(listbox_frame, text="Projects", font=("Helvetica", 14, "bold"))
+    project_frame.grid(row=0, column=0, sticky="nsew", padx=5)
+
+    # Criar o version_frame dentro do listbox_frame
+    version_frame = tk.LabelFrame(listbox_frame, text="Version", font=("Helvetica", 14, "bold"))
+    version_frame.grid(row=0, column=1, sticky="nsew", padx=5)
+
+    # Defina a altura dos Listboxes
+    project_listbox = Listbox(project_frame, selectmode=SINGLE, height=5)
+    project_listbox.pack(fill=tk.X, expand=True)
     project_listbox.bind('<<ListboxSelect>>', on_project_select)
 
-    version_listbox = Listbox(version_frame, selectmode=SINGLE)
-    version_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    version_listbox = Listbox(version_frame, selectmode=SINGLE, height=5)
+    version_listbox.pack(fill=tk.X, expand=True)
     version_listbox.bind('<<ListboxSelect>>', on_version_select)
 
-    route_label = tk.Label(root, text="Route:")
-    route_label.pack(pady=2)
-    route_entry = tk.Entry(root)
-    route_entry.pack(pady=5)
+    evaluation_frame = tk.Frame(root)
+    evaluation_frame.pack(pady=5)
 
-    evaluate_button = tk.Button(root, text="Evaluate", command=run_evaluation)
-    evaluate_button.pack(pady=8)
+    route_label = tk.Label(evaluation_frame, text="Route:")
+    route_label.pack(side=tk.LEFT, padx=5)
+
+    route_entry = tk.Entry(evaluation_frame)
+    route_entry.pack(side=tk.LEFT, padx=5)
+
+    evaluate_button = tk.Button(evaluation_frame, text="Evaluate", command=run_evaluation)
+    evaluate_button.pack(side=tk.LEFT, padx=5)
 
     dataframe_button = tk.Button(root, text="Generate CSV", command=create_csv)
     dataframe_button.pack(pady=8)
@@ -104,7 +128,7 @@ def create_gui():
     comparative_dataset_button = tk.Button(root, text="Generate Comparative Dataset", command=create_comparative_dataset)
     comparative_dataset_button.pack(pady=8)
 
-    exit_button = tk.Button(root, text="Exit", command=lambda: on_exit(root))
+    exit_button = tk.Button(root, text="Exit", bg="red", fg="white", command=lambda: on_exit(root))
     exit_button.pack(pady=8)
 
     for project in projects:
