@@ -1,1 +1,0 @@
-http://localhost:3008/privacy-policy
