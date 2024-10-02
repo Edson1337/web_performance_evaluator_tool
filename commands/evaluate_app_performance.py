@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from utils.settings_files_builder import rewrite_url_in_file, delete_sitespeed_results
 from result_summarization.summarized_results_creator import assemble_summarize_results
-from sitespeed_run.sitespeed_bat_runner import execute_sitespeed_from_shell_script
+from web_performance_evaluator_tool.engine_run.sitespeed_runner import execute_sitespeed_from_shell_script
 from schema.config_json import parsed_json 
 from utils.performance_id_generator import generate_performance_test_id
 from utils.app_running import check_port
@@ -24,9 +24,8 @@ def execute_evaluation(project_path, route):
         
         with open(package_json_path) as f:
             package_json = json.load(f)
-            dev_script = package_json['scripts']['dev']
             host = "127.0.0.1"
-            port = int(dev_script.split('-p')[1].strip())
+            port = int(package_json['executionPort'])
             if check_port(host, port):
                 project_name = package_json['name']
                 parsed_json['performance_evaluation']['app_name'] = project_name
@@ -38,7 +37,7 @@ def execute_evaluation(project_path, route):
 
                 try:
                     print(parsed_json)
-                    rewrite_url_in_file(parsed_json)
+                    # rewrite_url_in_file(parsed_json)
                     start_time = datetime.now()
                     execute_sitespeed_from_shell_script(parsed_json)
                     generate_performance_test_id(parsed_json)
