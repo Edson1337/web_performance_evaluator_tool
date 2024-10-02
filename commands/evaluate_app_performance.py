@@ -1,9 +1,9 @@
 import os
 import json
 from datetime import datetime
-from utils.settings_files_builder import rewrite_url_in_file, delete_sitespeed_results
+from utils.settings_files_builder import delete_sitespeed_results
 from result_summarization.summarized_results_creator import assemble_summarize_results
-from web_performance_evaluator_tool.engine_run.sitespeed_runner import execute_sitespeed_from_shell_script
+from engine_run.sitespeed_runner import execute_sitespeed_from_shell_script
 from schema.config_json import parsed_json 
 from utils.performance_id_generator import generate_performance_test_id
 from utils.app_running import check_port
@@ -33,11 +33,8 @@ def execute_evaluation(project_path, route):
                 url = create_url(local_host, route)
                 parsed_json['performance_evaluation']['url'] = f"{url}"
 
-                # delete_sitespeed_results(sitespeed_result_path)
-
                 try:
                     print(parsed_json)
-                    # rewrite_url_in_file(parsed_json)
                     start_time = datetime.now()
                     execute_sitespeed_from_shell_script(parsed_json)
                     generate_performance_test_id(parsed_json)
