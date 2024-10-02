@@ -1,4 +1,4 @@
-from gui.tool_gui import create_gui
+from views.tool_gui import create_gui
 
 
 if __name__ == '__main__':
