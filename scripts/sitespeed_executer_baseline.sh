@@ -1,5 +1,9 @@
 #!/bin/bash
-echo "[SH] Script shell started."
+echo "[SH] Script shell to Before Applications started."
+
+url=$1
+
+echo "[SH] URL recebida: $url"
 
 # Definindo o diretório raiz e o diretório de configurações
 rootFolder="./temp_scenario_settings/"
@@ -42,7 +46,7 @@ for configFile in "$configsFolder"/*; do
     }' "$configFile" > tmp.$$.json && mv tmp.$$.json "$configFile"
 
     # Executando o Docker para rodar o sitespeed.io com a configuração atual
-    docker run --rm -v "$(pwd):/sitespeed.io" sitespeedio/sitespeed.io:34.9.0 --config "$configFile" "${rootFolder}urls.txt"
+    docker run --rm -v "$(pwd):/sitespeed.io" sitespeedio/sitespeed.io:34.9.0 --config "$configFile" "$url"
 
     # Removendo o objeto "compare" do arquivo JSON usando jq
     jq 'del(.compare)' "$configFile" > tmp.$$.json && mv tmp.$$.json "$configFile"
