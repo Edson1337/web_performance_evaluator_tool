@@ -5,9 +5,8 @@ url=$1
 
 echo "[SH] URL recebida: $url"
 
-# Definindo o diretório raiz e o diretório de configurações
-rootFolder="./temp_scenario_settings/"
-configsFolder="${rootFolder}configs/"
+# Definindo o diretório de configurações
+configsFolder="configs/"
 
 # Verificando se o diretório de configurações existe
 if [ ! -d "$configsFolder" ]; then
