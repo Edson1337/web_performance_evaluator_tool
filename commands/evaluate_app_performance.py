@@ -36,7 +36,7 @@ def execute_evaluation(project_path, route):
                 try:
                     print(parsed_json)
                     start_time = datetime.now()
-                    execute_sitespeed_from_shell_script(parsed_json)
+                    # execute_sitespeed_from_shell_script(parsed_json)
                     generate_performance_test_id(parsed_json)
                     assemble_summarize_results(parsed_json)
                     end_time = datetime.now()

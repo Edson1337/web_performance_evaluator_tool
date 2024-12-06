@@ -11,11 +11,13 @@ def generate_csv():
     current_dir = os.path.abspath(__file__)
     project_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
     results_path = os.path.join(project_dir, 'results')
+    dataframes_folder = os.path.join(results_path, 'dataframes')
+    os.makedirs(dataframes_folder, exist_ok=True)
     data = []
 
     for root, dirs, files in os.walk(results_path):
         # Ignora a pasta 'baseline_to_statistical' e pastas que correspondem ao padrão de nomes dos JSONs
-        dirs[:] = [d for d in dirs if d != 'baseline_to_statistical' and not json_file_pattern.match(d)]
+        dirs[:] = [d for d in dirs if d != ('baseline_to_statistical' or 'comparative') and not json_file_pattern.match(d)]
 
         for file in files:
             if json_file_pattern.match(file):
@@ -49,6 +51,6 @@ def generate_csv():
                             data.append(data_row)
 
     df = pd.DataFrame(data)
-    output_csv_path = os.path.join(results_path, 'performance_evaluation_results.csv')
+    output_csv_path = os.path.join(dataframes_folder, 'performance_evaluation_results.csv')
     df.to_csv(output_csv_path, index=False)
     print(f"CSV file saved at {output_csv_path}")
