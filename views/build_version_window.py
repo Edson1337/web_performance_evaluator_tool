@@ -77,9 +77,6 @@ def open_build_version_window(root, selected_project, selected_version):
     port_entry = tk.Entry(frame)
     port_entry.grid(row=row, column=1, sticky='we', pady=5)
     row += 1
-    
-    package_json_dict = {'path': package_json_path, 'file': package_json}
-    print(package_json_dict)
 
     build_button = tk.Button(frame, text="Build", command=lambda: build_version(
         package_manager_var.get(),
@@ -105,8 +102,6 @@ def build_version(package_manager, init_type, port, project_dir, selected_versio
 
     with open(package_json_path, 'r') as f:
         package_json = json.load(f)
-        
-    print(package_json)
     package_json['executionPort'] = port
 
     with open(package_json_path, 'w') as f:
@@ -114,7 +109,7 @@ def build_version(package_manager, init_type, port, project_dir, selected_versio
 
     if package_manager == 'npm':
         # lock_file = 'package-lock.json'
-        install_command = f'{package_manager} install --production'
+        install_command = f'{package_manager} install'
     elif package_manager == 'pnpm':
         lock_file = 'pnpm-lock.yaml'
         install_command = f'{package_manager} install --prod'
@@ -177,9 +172,28 @@ def build_version(package_manager, init_type, port, project_dir, selected_versio
         
         print(result.stdout)
         messagebox.showinfo("Success", f"Docker image '{image_name}' built successfully.")
+        create_docker_compose_file(project_dir, image_name, port)
     except subprocess.CalledProcessError as e:
         
         error_message = e.stderr.strip() if e.stderr else "An error occurred while building the Docker image."
         messagebox.showerror("Error", f"Failed to build Docker image:\n{error_message}")
     finally:
         build_window.destroy()
+
+def create_docker_compose_file(project_dir, image_name, port):
+    compose_content = f"""
+    services:
+      {image_name}:
+        image: {image_name}
+        ports:
+          - "{port}:{port}"
+    """
+
+    compose_file_path = os.path.join(project_dir, 'compose.yaml')
+
+    try:
+        with open(compose_file_path, 'w') as f:
+            f.write(compose_content.strip())
+        print(f"Compose file created successfully at {compose_file_path}")
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to create compose.yaml: {e}")
