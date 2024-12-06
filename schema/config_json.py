@@ -8,13 +8,9 @@ parsed_json = {
         "metrics": [
             "firstContentfulPaint",
             "largestContentfulPaint",
-            "cumulativeLayoutShift",
-            "pageLoadTime",
+            "fullyLoaded",
             "ttfb",
-            "maxPotentialFid",
-            "totalBlockingTime",
-            "requests",
-            "contentSize"
+            "totalBlockingTime"
         ],
         "scenarios": []
     }

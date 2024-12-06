@@ -7,11 +7,7 @@ def reset_setup_json(parsed_json):
     parsed_json['performance_evaluation']['metrics'] = [
         "firstContentfulPaint",
         "largestContentfulPaint",
-        "cumulativeLayoutShift",
-        "pageLoadTime",
+        "fullyLoaded",
         "ttfb",
-        "maxPotentialFid",
-        "totalBlockingTime",
-        "requests",
-        "contentSize"
+        "totalBlockingTime"
     ]

@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-def create_path_to_read_infos(file):
+def create_path_to_read_pages_content(file):
     file_path = Path(file)
     pages_path = Path('pages')
     # print(pages_path)
